@@ -2,6 +2,7 @@ package com.graphdemo.movies.movie_graph.Controller;
 
 import com.graphdemo.movies.movie_graph.Entity.Person;
 import com.graphdemo.movies.movie_graph.Service.PersonService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public Person createPerson(@RequestBody Person person) {
         return personService.createPerson(person);
     }
@@ -29,6 +30,11 @@ public class PersonController {
     @GetMapping("/{id}")
     public Person getPersonById(@PathVariable Long id) {
         return personService.getPersonById(id);
+    }
+
+    @PostMapping(value = "/bulk", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public List<Person> createPersons(@RequestBody List<Person> personList){
+        return personService.createPersons(personList);
     }
 
 }

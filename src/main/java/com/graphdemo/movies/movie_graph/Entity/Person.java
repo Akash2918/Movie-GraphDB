@@ -1,6 +1,7 @@
 package com.graphdemo.movies.movie_graph.Entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,11 +14,14 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 import java.util.HashSet;
 import java.util.Set;
 
+// ToDo [High] : Create DTO to fix deserialization issue
+
 @Node
 @Getter
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Person {
     @Id
     @GeneratedValue
@@ -25,11 +29,11 @@ public class Person {
     private Long id;
     private String name;
 
-    @JsonBackReference("actors")
+//    @JsonBackReference("actors")
     @Relationship(type = "ACTED_IN", direction = Relationship.Direction.OUTGOING)
     private Set<Movie> actedIn = new HashSet<>();
 
-    @JsonBackReference("directors")
+//    @JsonBackReference("directors")
     @Relationship(type = "DIRECTED", direction = Relationship.Direction.OUTGOING)
     private Set<Movie> directedMovies = new HashSet<>();
 }
